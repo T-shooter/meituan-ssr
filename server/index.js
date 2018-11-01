@@ -1,5 +1,5 @@
-
-const Koa = require('koa')
+import Koa from 'koa'
+// const Koa = require('koa')
 const consola = require('consola')
 const { Nuxt, Builder } = require('nuxt')
 
@@ -11,7 +11,7 @@ const port = process.env.PORT || 3000
 let config = require('../nuxt.config.js')
 config.dev = !(app.env === 'production')
 
-async function start() {
+async function start () {
   // Instantiate nuxt.js
   const nuxt = new Nuxt(config)
 
