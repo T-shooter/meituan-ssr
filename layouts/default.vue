@@ -6,17 +6,19 @@
     <el-main>
       <nuxt/>
     </el-main>
-    <el-footer height="100%">Footer</el-footer>
+    <el-footer height="auto">
+      <MyFooter />
+    </el-footer>
   </el-container>
 </template>
 
 <script>
   import MyHeader from '~/components/public/header'
-
+  import MyFooter from '~/components/public/footer'
   export default {
-    components: {
-      MyHeader
+    components:{
+      MyHeader,
+      MyFooter
     }
   }
-
 </script>
