@@ -14,12 +14,10 @@
 </template>
 
 <script>
-  import topBar from './topbar'
-  import searchBar from './searchbar'
-
+  import topBar from './topbar.vue'
+  import searchBar from './searchbar.vue'
   export default {
-    name: '',
-    components: {
+    components:{
       topBar,
       searchBar
     }
