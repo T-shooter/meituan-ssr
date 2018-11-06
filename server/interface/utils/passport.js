@@ -24,7 +24,7 @@ passport.serializeUser((user, done) => {
 })
 
 // 反序列化
-passport.deserialzeUser((user, done) => {
+passport.deserializeUser((user, done) => {
   return done(null, user)
 })
 

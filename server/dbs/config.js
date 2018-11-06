@@ -18,18 +18,18 @@ export default {
     },
     get pass () {
       return 'cpvftdpwvuljbidh'
-    }
-  },
-  // 验证码
-  get code () {
-    return () => {
-      return Math.random().toString(16).slice(2, 6).toUpperCase()
-    }
-  },
-  // 过期时间
-  get expire () {
-    return () => {
-      return new Date().getTime() + 60 * 60 * 1000
+    },
+    // 验证码
+    get code () {
+      return () => {
+        return Math.random().toString(16).slice(2, 6).toUpperCase()
+      }
+    },
+    // 过期时间
+    get expire () {
+      return () => {
+        return new Date().getTime() + 60 * 60 * 1000
+      }
     }
   }
 }
