@@ -6,7 +6,7 @@
         class="left">
         <img
           src="//s0.meituan.net/bs/fe-web-meituan/e5eeaef/img/logo.png"
-          alt="美团" />
+          alt="美团"/>
       </el-col>
       <el-col
         :span="15"
@@ -17,7 +17,7 @@
             placeholder="搜索商家或地点"
             @focus="focus"
             @blur="blur"
-            @input="input" />
+            @input="input"/>
           <button class="el-button el-button--primary">
             <i class="el-icon-search"></i>
           </button>
@@ -26,49 +26,56 @@
             class="hotPlace">
             <dt>热门搜索</dt>
             <dd
-              v-for="item of hotPlace"
-              :key="item">{{ item }}</dd>
+              v-for="(item, index) of $store.state.home.hotPlace.slice(0,5)"
+              :key="index">{{ item.name }}
+            </dd>
           </dl>
           <dl
             v-if="isSearchList"
             class="searchList">
             <dd
-              v-for="item of searchList"
-              :key="item">{{ item }}</dd>
+              v-for="(item, index) of searchList"
+              :key="index">{{ item.name }}
+            </dd>
           </dl>
         </div>
-        <p class="suggset">
-          <a href="">故宫博物院</a>
-          <a href="">故宫博物院</a>
-          <a href="">故宫博物院</a>
-          <a href="">故宫博物院</a>
-          <a href="">故宫博物院</a>
+        <p class="suggest">
+          <a
+            v-for="(item, index) of $store.state.home.hotPlace.slice(0,5)"
+            :key="index"
+            href="#"
+          >{{ item.name }}</a>
         </p>
         <ul class="nav">
           <li>
             <nuxt-link
               to="/"
-              class="takeout">美团外卖</nuxt-link>
+              class="takeout">美团外卖
+            </nuxt-link>
           </li>
           <li>
             <nuxt-link
               to="/"
-              class="movie">猫眼电影</nuxt-link>
+              class="movie">猫眼电影
+            </nuxt-link>
           </li>
           <li>
             <nuxt-link
               to="/"
-              class="hotel">美团酒店</nuxt-link>
+              class="hotel">美团酒店
+            </nuxt-link>
           </li>
           <li>
             <nuxt-link
               to="/"
-              class="apartment">民宿/公寓</nuxt-link>
+              class="apartment">民宿/公寓
+            </nuxt-link>
           </li>
           <li>
             <nuxt-link
               to="/"
-              class="business">商家入驻</nuxt-link>
+              class="business">商家入驻
+            </nuxt-link>
           </li>
         </ul>
       </el-col>
@@ -95,14 +102,15 @@
 </template>
 
 <script>
+  import _ from 'lodash'
+
   export default {
-    name: '',
     data () {
       return {
         search: '',
         isFocus: false,
-        hotPlace: ['火锅', '火锅', '火锅'],
-        searchList: ['故宫', '故宫', '故宫']
+        hotPlace: [],
+        searchList: []
       }
     },
     computed: {
@@ -123,7 +131,23 @@
         }, 200)
       },
       input () {
-        console.log('')
+        if (this.timer) {
+          clearTimeout(this.timer)
+        }
+        this.timer = setTimeout(async () => {
+          let city = this.$store.state.geo.position.city.replace('市', '')
+          this.searchList = []
+          if (!this.search) {
+            return
+          }
+          let { status, data: { top } } = await this.$axios.get('/search/top', {
+            params: {
+              input: this.search,
+              city
+            }
+          })
+          this.searchList = top.slice(0, 10)
+        }, 300)
       }
     }
   }
