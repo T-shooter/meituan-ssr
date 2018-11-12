@@ -1,6 +1,6 @@
 import mongoose from 'mongoose'
 const Schema = mongoose.Schema
-const Categroy = new Schema({
+const CategroySchema = new Schema({
   city: {
     type: String
   },
@@ -14,4 +14,4 @@ const Categroy = new Schema({
   }
 })
 
-export default mongoose.model('Categroy', Categroy)
+export default mongoose.model('Categroy', CategroySchema)

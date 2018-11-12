@@ -18,7 +18,9 @@
             @focus="focus"
             @blur="blur"
             @input="input"/>
-          <button class="el-button el-button--primary">
+          <button
+            class="el-button el-button--primary"
+            @click="searchProduct">
             <i class="el-icon-search"></i>
           </button>
           <dl
@@ -150,6 +152,9 @@
           })
           this.searchList = top.slice(0, 10)
         }, 300)
+      },
+      searchProduct () {
+        window.location.href = `/products?keyword=${encodeURIComponent(this.search)}`
       }
     }
   }

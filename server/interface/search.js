@@ -1,12 +1,11 @@
 import Router from 'koa-router'
 import axios from './utils/axios'
 import Poi from '../dbs/models/poi'
+import sign from './utils/sign'
 
 let router = new Router({
   prefix: '/search'
 })
-
-const sign = '3bb84230a3a155fa4d39890d04e8b794'
 
 router.get('/top', async (ctx) => {
   let { status, data: { top } } = await axios.get(`http://cp-tools.cn/search/top`, {
@@ -46,6 +45,32 @@ router.get('/resultsByKeywords', async (ctx) => {
   ctx.body = {
     count: status === 200 ? count : 0,
     pois: status === 200 ? pois : []
+  }
+})
+
+router.get('/products', async (ctx) => {
+  let keyword = ctx.query.keyword || '旅游'
+  let city = ctx.query.city || '北京'
+  let { status, data: { product, more } } = await axios.get('http://cp-tools.cn/search/products', {
+    params: {
+      keyword,
+      city,
+      sign
+    }
+  })
+  if (status === 200) {
+    ctx.body = {
+      product,
+      // 判断是否登录
+      more: ctx.isAuthenticated() ? more : [],
+      login: ctx.isAuthenticated()
+    }
+  } else {
+    ctx.body = {
+      product: {},
+      more: ctx.isAuthenticated() ? more : [],
+      login: ctx.isAuthenticated()
+    }
   }
 })
 
