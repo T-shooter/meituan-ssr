@@ -23,49 +23,43 @@
         <el-button
           type="warning"
           round
-          @click="createCart">立即抢购</el-button>
+          @click="createCart">立即抢购
+        </el-button>
       </dd>
     </dl>
   </li>
 </template>
 
 <script>
-export default {
-  props: {
-    meta: {
-      type: Object,
-      default: () => {
-        return {}
+  export default {
+    props: {
+      meta: {
+        type: Object,
+        default: () => {
+          return {}
+        }
       }
-    }
-  },
-  methods: {
-    createCart: async function () {
-      let self = this;
-      let {
-        status,
-        data: {
-          code,
-          id
-        }
-      } = await this.$axios.post('/cart/create', {
-        params: {
-          id: Math.random().toString().slice(3, 9),
-          detail: {
-            name: self.meta.name,
-            price: self.meta.biz_ext.cost,
-            imgs: self.meta.photos
+    },
+    methods: {
+      createCart: async function() {
+        let { status, data: { code, id } } = await this.$axios.post('/cart/create', {
+          params: {
+            id: Math.random().toString().slice(3, 9),
+            detail: {
+              name: this.meta.name,
+              price: this.meta.biz_ext.cost,
+              imgs: this.meta.photos
+            }
           }
+        })
+        if (status === 200 && code === 0) {
+          window.location.href = `/cart/?id=${id}`
+        } else {
+          console.log('error')
         }
-      })
-      if(status===200&&code===0){
-        window.location.href=`/cart/?id=${id}`
-      }else{
-        console.log('error')
       }
     }
   }
-}
 </script>
 
 <style lang="scss">
